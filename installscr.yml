@@ -1,0 +1,55 @@
+- name: Install packages
+  hosts: localhost
+  become: true
+  pre_tasks:
+    - name: Update Cache
+      tags:
+      - git
+      - tmux
+      - zsh
+      - nvim
+      apt:
+        name:
+        update_cache: true
+  tasks:
+    - name: Install Packages from apt
+      tags: 
+      - tmux
+      - git
+      - stow
+      - zsh
+      apt: 
+        name:
+          - tmux
+          - stow
+          - git
+          - zsh
+    - name: Change Shell to zsh
+      tags:
+      - zsh
+      shell: |
+        chsh -s `which zsh`
+
+    - name: Install ohmyzsh
+      tags:
+      - zsh
+      shell: |
+        curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    - name: Install zsh Plugins
+      tags:
+      - zsh
+      ansible.builtin.git:
+        repo: 'https://github.com/marlonrichert/zsh-autocomplete.git'
+        dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+    - name: Install nvim
+      tags:
+      - nvim
+      ansible.builtin.git:
+        repo: 'https://github.com/nvim-lua/kickstart.nvim.git'
+        dest: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config', true) }}/nvim"
+        depth: 1
+#    - name: Update zshrc
+#      shell: |
+#      add command to update zshrc dotfile
+
+
