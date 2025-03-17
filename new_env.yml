@@ -9,6 +9,9 @@
       - zsh
       - nvim
       - stow
+      - python
+      - go
+      - node
       ansible.builtin.apt:
         update_cache: true
       when: ansible_facts['os_family'] == 'Debian'
@@ -19,6 +22,9 @@
       - zsh
       - nvim
       - stow
+      - python
+      - go
+      - node
       ansible.builtin.homebrew:
         update_cache: true
       when: ansible_facts['os_family'] == 'Darwin'
@@ -29,26 +35,37 @@
       - git
       - stow
       - zsh
+      - go
+      - python
+      - node
       ansible.builtin.apt: 
         name:
           - tmux
           - stow
           - git
           - zsh
+          - python3
+          - node
       when: ansible_facts['os_family'] == 'Debian'
-    - name: Install Packcages from brew
+
+    - name: Install Packages from brew
       tags: 
       - tmux
       - git
       - stow
       - zsh
+      - go
+      - python
       ansible.builtin.homebrew: 
         name:
           - tmux
           - stow
           - git
           - zsh
+          - python3
+          - node
       when: ansible_facts['os_family'] == 'Darwin'
+
     - name: Change Shell to zsh
       tags:
       - zsh
@@ -60,12 +77,14 @@
       - zsh
       shell: |
         curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+
     - name: Install zsh Plugins
       tags:
       - zsh
       ansible.builtin.git:
         repo: 'https://github.com/marlonrichert/zsh-autocomplete.git'
         dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+
     - name: Install nvim
       tags:
       - nvim
