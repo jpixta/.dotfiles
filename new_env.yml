@@ -2,15 +2,26 @@
   hosts: localhost
   become: true
   pre_tasks:
-    - name: Update Cache
+    - name: Update Cache for Ubuntu/WSL
       tags:
       - git
       - tmux
       - zsh
       - nvim
-      apt:
-        name:
+      - stow
+      ansible.builtin.apt:
         update_cache: true
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Update Cache for Homebrew
+      tags:
+      - git
+      - tmux
+      - zsh
+      - nvim
+      - stow
+      ansible.builtin.homebrew:
+        update_cache: true
+      when: ansible_facts['os_family'] == 'Darwin'
   tasks:
     - name: Install Packages from apt
       tags: 
@@ -18,12 +29,26 @@
       - git
       - stow
       - zsh
-      apt: 
+      ansible.builtin.apt: 
         name:
           - tmux
           - stow
           - git
           - zsh
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Install Packcages from brew
+      tags: 
+      - tmux
+      - git
+      - stow
+      - zsh
+      ansible.builtin.homebrew: 
+        name:
+          - tmux
+          - stow
+          - git
+          - zsh
+      when: ansible_facts['os_family'] == 'Darwin'
     - name: Change Shell to zsh
       tags:
       - zsh
