@@ -12,6 +12,7 @@
       - python
       - go
       - node
+      - nvim
       ansible.builtin.apt:
         update_cache: true
       when: ansible_facts['os_family'] == 'Debian'
@@ -25,20 +26,22 @@
       - go
       - python
       - node
+      - nvim
       ansible.builtin.apt: 
         name:
-          - tmux
-          - stow
-          - git
-          - zsh
-          - python3
-          - node
+        - tmux
+        - stow
+        - git
+        - zsh
+        - python3
+        - node
+        - nvim
       when: ansible_facts['os_family'] == 'Debian'
 
     - name: Ensure Homebrew is installed
       tags:
       - git
-      - neovim
+      - nvim
       - htop
       - tmux
       - stow
@@ -63,6 +66,7 @@
       - python
       - go
       - node
+      - nvim
       community.general.homebrew:
         name: git 
         state: present 
@@ -77,6 +81,8 @@
         name: golang
         state: present
         name: node
+        state: present
+        name: nvim
         state: present
         update_homebrew: true
       when: ansible_facts['os_family'] == 'Darwin'
@@ -100,13 +106,17 @@
         repo: 'https://github.com/marlonrichert/zsh-autocomplete.git'
         dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
 
-    - name: Install nvim
+    - name: Install nvim kickstart
+      become_user: "{{ ansible_env.SUDO_USER }}"
       tags:
       - nvim
       ansible.builtin.git:
         repo: 'https://github.com/nvim-lua/kickstart.nvim.git'
         dest: "{{ lookup('env', 'XDG_CONFIG_HOME') | default(ansible_env.HOME + '/.config', true) }}/nvim"
         depth: 1
+    - name: Update kickstart Perms
+      shell: | 
+        chown -R $( ansible_env.SUDO_USER }}):$({{ ansible_env.SUDO_USER }}) ~/.config/nvim
 #    - name: Update zshrc
 #      shell: |
 #      add command to update zshrc dotfile
