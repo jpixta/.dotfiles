@@ -15,19 +15,6 @@
       ansible.builtin.apt:
         update_cache: true
       when: ansible_facts['os_family'] == 'Debian'
-    - name: Update Cache for Homebrew
-      tags:
-      - git
-      - tmux
-      - zsh
-      - nvim
-      - stow
-      - python
-      - go
-      - node
-      ansible.builtin.homebrew:
-        update_cache: true
-      when: ansible_facts['os_family'] == 'Darwin'
   tasks:
     - name: Install Packages from apt
       tags: 
@@ -48,22 +35,50 @@
           - node
       when: ansible_facts['os_family'] == 'Debian'
 
-    - name: Install Packages from brew
-      tags: 
-      - tmux
+    - name: Ensure Homebrew is installed
+      tags:
       - git
+      - neovim
+      - htop
+      - tmux
       - stow
+      - python3
+      - node
+      shell: |
+        if ! command -v brew &> /dev/null
+        then
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        fi
+      args:
+        creates: /opt/homebrew/bin/brew
+      when: ansible_facts['os_family'] == 'Darwin'
+
+    - name: Install packages with Homebrew
+      become_user: "{{ ansible_env.SUDO_USER }}"
+      tags:
+      - git
+      - tmux
       - zsh
-      - go
+      - stow
       - python
-      ansible.builtin.homebrew: 
-        name:
-          - tmux
-          - stow
-          - git
-          - zsh
-          - python3
-          - node
+      - go
+      - node
+      community.general.homebrew:
+        name: git 
+        state: present 
+        name: tmux 
+        state: present
+        name: zsh
+        state: present
+        name: stow
+        state: present
+        name: python3
+        state: present
+        name: golang
+        state: present
+        name: node
+        state: present
+        update_homebrew: true
       when: ansible_facts['os_family'] == 'Darwin'
 
     - name: Change Shell to zsh
