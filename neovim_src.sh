@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 cd ~
 git clone https://github.com/neovim/neovim
