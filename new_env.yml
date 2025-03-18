@@ -65,21 +65,15 @@
       - python
       - go
       - node
-      - nvim
       community.general.homebrew:
-        name: git 
-        state: present 
-        name: tmux 
-        state: present
-        name: zsh
-        state: present
-        name: stow
-        state: present
-        name: python3
-        state: present
-        name: golang
-        state: present
-        name: node
+        name:
+          - git
+          - tmux
+          - zsh
+          - stow
+          - python3
+          - golang
+          - node
         state: present
         update_homebrew: true
       when: ansible_facts['os_family'] == 'Darwin'
