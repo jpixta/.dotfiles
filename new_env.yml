@@ -65,6 +65,7 @@
       - python
       - go
       - node
+      - nvim
       community.general.homebrew:
         name:
           - git
@@ -74,6 +75,7 @@
           - python3
           - golang
           - node
+          - neovim
         state: present
         update_homebrew: true
       when: ansible_facts['os_family'] == 'Darwin'
@@ -94,6 +96,7 @@
       tags:
       - nvim
       shell: ~/.dotfiles/neovim_src.sh
+      when: ansible_facts['os_family'] == 'Debian'
 
     - name: Install nvim kickstart
       become_user: "{{ ansible_env.SUDO_USER }}"

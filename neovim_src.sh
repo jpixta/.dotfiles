@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 cd ~
-git clone https://github.com/neovim/neovim
+git clone https://github.com/neovim/neovim ~/neovim
 cd neovim
 git checkout stable
 make CMAKE_BUILD_TYPE=RelWithDebInfo
