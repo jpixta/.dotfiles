@@ -81,8 +81,6 @@
         state: present
         name: node
         state: present
-        name: pip
-        state: present
         update_homebrew: true
       when: ansible_facts['os_family'] == 'Darwin'
 
