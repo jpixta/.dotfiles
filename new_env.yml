@@ -11,8 +11,8 @@
       - stow
       - python
       - go
-      - node
       - nvim
+      - node
       ansible.builtin.apt:
         update_cache: true
       when: ansible_facts['os_family'] == 'Debian'
@@ -26,7 +26,6 @@
       - go
       - python
       - node
-      - nvim
       ansible.builtin.apt: 
         name:
         - tmux
@@ -34,10 +33,13 @@
         - git
         - zsh
         - python3
-        - node
-        - nvim
+        - npm
+        - nodejs
+        - pip
+#        - nvim
       when: ansible_facts['os_family'] == 'Debian'
 
+    
     - name: Ensure Homebrew is installed
       tags:
       - git
@@ -82,7 +84,7 @@
         state: present
         name: node
         state: present
-        name: nvim
+        name: pip
         state: present
         update_homebrew: true
       when: ansible_facts['os_family'] == 'Darwin'
@@ -98,13 +100,11 @@
       - zsh
       shell: |
         curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-
-    - name: Install zsh Plugins
+    - name: Invoking neovim install script
+      become_user: "{{ ansible_env.SUDO_USER }}"
       tags:
-      - zsh
-      ansible.builtin.git:
-        repo: 'https://github.com/marlonrichert/zsh-autocomplete.git'
-        dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+      - nvim
+      shell: ~/.dotfiles/neovim_src.sh
 
     - name: Install nvim kickstart
       become_user: "{{ ansible_env.SUDO_USER }}"
