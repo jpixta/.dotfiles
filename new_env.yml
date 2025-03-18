@@ -10,7 +10,6 @@
       - nvim
       - stow
       - python
-      - go
       - nvim
       - node
       ansible.builtin.apt:
@@ -23,7 +22,6 @@
       - git
       - stow
       - zsh
-      - go
       - python
       - node
       ansible.builtin.apt: 
@@ -36,7 +34,6 @@
         - npm
         - nodejs
         - pip
-#        - nvim
       when: ansible_facts['os_family'] == 'Debian'
 
     
