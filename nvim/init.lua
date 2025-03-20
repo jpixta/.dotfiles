@@ -15,3 +15,6 @@ vim.cmd([[
     autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
   augroup END
 ]])
+
+-- Future lazyvim install
+require("config.lazy")
