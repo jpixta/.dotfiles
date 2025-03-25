@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+-- Bootstrap lazy.nvim
+>>>>>>> 7c05a21 (Added few lua files, for future nvim conf)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -14,7 +18,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+<<<<<<< HEAD
 -- Map leader
+=======
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+-- This is also a good place to setup other settings (vim.opt)
+>>>>>>> 7c05a21 (Added few lua files, for future nvim conf)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
